@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Package {
+  id               Int            @id @default(autoincrement())
+  title            String
+  slug             String         @unique
+  destination      String
+  country          String
+  category         String
+  duration         String
+  days             Int
+  nights           Int
+  price            Decimal        @db.Decimal(10, 2)
+  originalPrice    Decimal?       @db.Decimal(10, 2)
+  shortDescription String         @db.Text
+  description      String         @db.LongText
+  highlights       String         @db.LongText
+  inclusions       String         @db.LongText
+  exclusions       String         @db.LongText
+  hotelDetails     String?        @db.LongText
+  transportation   String?        @db.LongText
+  terms            String?        @db.LongText
+  image            String
+  featured         Boolean        @default(false)
+  active           Boolean        @default(true)
+  seoTitle         String?
+  seoDescription   String?        @db.Text
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  images            PackageImage[]
+  itineraries       Itinerary[]
+  enquiries         Enquiry[]
+}
+
+model PackageImage {
+  id        Int     @id @default(autoincrement())
+  image     String
+  packageId Int
+  package   Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+}
+
+model Itinerary {
+  id          Int     @id @default(autoincrement())
+  day         Int
+  title       String
+  description String  @db.Text
+  packageId   Int
+  package     Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+}
+
+model Enquiry {
+  id          Int      @id @default(autoincrement())
+  name        String
+  phone       String
+  email       String?
+  destination String?
+  message     String    @db.Text
+  packageId   Int?
+  status      String    @default("NEW")
+  createdAt   DateTime  @default(now())
+  package     Package?  @relation(fields: [packageId], references: [id], onDelete: SetNull)
+}
+
+model SiteVisitor {
+  id         Int      @id @default(autoincrement())
+  visitorId  String   @unique
+  visitCount Int      @default(1)
+  firstVisit DateTime @default(now())
+  lastVisit  DateTime @updatedAt
+}

@@ -1,0 +1,451 @@
+import Image from "next/image";
+import Link from "next/link";
+
+import {
+  ArrowRight,
+  BadgeIndianRupee,
+  Headphones,
+  MapPin,
+  ShieldCheck,
+  Search,
+  Star,
+  Route,
+  Palmtree,
+  HeartHandshake,
+} from "lucide-react";
+
+import WebsiteShell from "@/components/website/WebsiteShell";
+import PackageCard from "@/components/website/PackageCard";
+import DestinationCard from "@/components/website/DestinationCard";
+import SectionTitle from "@/components/website/SectionTitle";
+import CTASection from "@/components/website/CTASection";
+
+import { destinations } from "@/lib/data";
+import { getPackages } from "@/lib/packages";
+import { siteConfig } from "@/lib/config";
+
+export const dynamic = "force-dynamic";
+
+const KERALA_HERO =
+  "https://wallpapercat.com/w/full/8/2/6/851697-3840x2160-desktop-4k-kerala-background.jpg";
+
+export default async function Home() {
+  const packages = (
+    await getPackages({
+      featured: true,
+    })
+  ).slice(0, 3);
+
+  const benefits = [
+    {
+      icon: Route,
+      title: "Routes planned around you",
+      text: "Not every traveller wants the same holiday. We build the pace around your dates, interests and budget.",
+    },
+    {
+      icon: BadgeIndianRupee,
+      title: "Clear, sensible pricing",
+      text: "We keep the plan practical and explain what is included before you confirm.",
+    },
+    {
+      icon: HeartHandshake,
+      title: "A team you can actually reach",
+      text: "From the first enquiry to the journey home, you have someone to speak with when you need help.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Stays we would choose ourselves",
+      text: "Hotels and experiences are selected for location, comfort and overall value rather than just photos.",
+    },
+  ];
+
+  const reviews = [
+    {
+      name: "Ananya",
+      destination: "Kumarakom",
+      text: "Our trip felt relaxed from day one. The hotel choice was lovely and the transfers were always on time.",
+    },
+    {
+      name: "Rahul",
+      destination: "Munnar",
+      text: "What we liked most was that the itinerary did not feel rushed. We had enough time to simply enjoy the place.",
+    },
+    {
+      name: "Meera",
+      destination: "Alleppy",
+      text: "Every detail was explained clearly before we travelled and the team stayed available throughout our trip.",
+    },
+  ];
+
+  return (
+    <WebsiteShell>
+      {/* HERO */}
+
+      <section className="relative min-h-[760px] overflow-hidden bg-[#173f35]">
+        <Image
+          src={KERALA_HERO}
+          alt="Kerala backwaters surrounded by coconut trees"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0d2b23]/90 via-[#173f35]/50 to-black/10" />
+
+        <div className="container-site relative flex min-h-[760px] items-center py-20">
+          <div className="max-w-[720px] text-white">
+            <div className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#f1d199]">
+              <Palmtree size={18} />
+              Travel, at a gentler pace
+            </div>
+
+            <h1 className="mt-6 max-w-[700px] text-5xl font-bold leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-[78px]">
+              Journeys that feel
+              <span className="font-serif italic text-[#f2d39a]">
+                {" "}
+                personal.
+              </span>
+            </h1>
+
+            <p className="mt-6 max-w-[590px] text-lg leading-8 text-white/80">
+              From misty hill roads and quiet
+              backwaters to beaches and journeys
+              abroad, Viago plans holidays with
+              the time, care and local understanding
+              they deserve.
+            </p>
+
+            <div className="mt-9 flex flex-wrap gap-4">
+                <Link
+                    href="/packages"
+                    className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-[6px] bg-[#f2d39a] px-7 py-4 text-[15px] font-bold text-[#173f35] shadow-sm transition-all duration-200 hover:bg-[#f6dfb4] hover:shadow-md"
+                >
+                    Explore Journeys
+
+                    <ArrowRight
+                    size={18}
+                    strokeWidth={2}
+                    />
+                </Link>
+
+                <Link
+                    href="/contact"
+                    className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-[6px] border border-white/60 bg-white/5 px-7 py-4 text-[15px] font-bold text-white backdrop-blur-sm transition-all duration-200 hover:bg-white hover:text-[#173f35]"
+                >
+                    Plan With Us
+                </Link>
+            </div>
+
+            <form
+              action="/packages"
+              className="mt-12 max-w-[650px] bg-[#fffdf8] p-2.5 shadow-2xl"
+            >
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <div className="flex flex-1 items-center gap-3 px-4">
+                  <MapPin
+                    size={18}
+                    className="text-[#b78334]"
+                  />
+
+                  <input
+                    name="destination"
+                    aria-label="Destination"
+                    placeholder="Where would you like to go?"
+                    className="w-full bg-transparent py-4 text-[#173f35] outline-none placeholder:text-[#858d88]"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="inline-flex items-center justify-center gap-2 bg-[#173f35] px-6 py-4 font-bold text-white"
+                >
+                  <Search size={17} />
+                  Find a trip
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div className="absolute bottom-0 left-0 h-[12px] w-full bg-[#f8f4e9]" />
+      </section>
+
+      {/* INTRO */}
+
+      <section className="bg-[#f8f4e9] py-20">
+        <div className="container-site grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
+          <div>
+            <span className="kerala-eyebrow">
+              From Kerala, for travellers everywhere
+            </span>
+
+            <h2 className="mt-5 max-w-3xl text-3xl font-bold leading-tight text-[#173f35] md:text-5xl">
+              We believe a good holiday should
+              never feel like a checklist.
+            </h2>
+          </div>
+
+          <div className="border-l-0 border-[#c7923e]/50 lg:border-l lg:pl-10">
+            <p className="text-base leading-8 text-[#68716c] md:text-lg">
+              Some journeys are about waking up
+              to tea gardens. Some are about a slow
+              afternoon beside the water. Others
+              begin with a flight somewhere completely
+              new. We help put those moments together
+              into a trip that makes sense for you.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* PACKAGES */}
+
+      <section className="section-pad bg-[#fffdf8]">
+        <div className="container-site">
+          <div className="flex flex-col justify-between gap-7 md:flex-row md:items-end">
+            <SectionTitle
+              eyebrow="Journeys travellers love"
+              title="A few places worth disappearing to."
+              text="Start with one of our popular journeys and we'll help shape the details around your dates and preferences."
+            />
+
+            <Link
+              href="/packages"
+              className="inline-flex items-center gap-2 font-bold text-[#173f35]"
+            >
+              See all packages
+              <ArrowRight size={17} />
+            </Link>
+          </div>
+
+          <div className="mt-12 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
+            {packages.map((pkg) => (
+              <PackageCard
+                key={pkg.id}
+                pkg={pkg}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* KERALA FEATURE */}
+
+      <section className="overflow-hidden bg-[#173f35] text-white">
+        <div className="grid lg:grid-cols-2">
+          <div className="relative min-h-[500px]">
+            <Image
+              src="https://assets.luxtripper.co.uk/media/29dcaf70-25dc-4ab1-8de9-fcbbd00fecfc/en/enchanting_kerala_and_backwaters_1920x1080.jpg"
+              alt="Traditional Kerala houseboat"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
+            />
+          </div>
+
+          <div className="flex items-center px-7 py-16 md:px-14 lg:px-16">
+            <div className="max-w-xl">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#e3bd78]">
+                Close to home
+              </span>
+
+              <h2 className="mt-5 text-4xl font-bold leading-tight md:text-5xl">
+                Kerala is more than a destination.
+                It is a way of slowing down.
+              </h2>
+
+              <p className="mt-6 leading-8 text-white/70">
+                Drift past coconut groves,
+                wake up among tea-covered hills,
+                spend an evening beside the Arabian
+                Sea or take the long scenic road
+                between them.
+              </p>
+
+              <Link
+                href="/packages?destination=Kerala"
+                className="mt-8 inline-flex items-center gap-2 border-b border-[#e3bd78] pb-2 font-bold text-[#f0d29c]"
+              >
+                Explore Kerala
+                <ArrowRight size={17} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* DESTINATIONS */}
+
+      <section className="section-pad kerala-pattern">
+        <div className="container-site">
+          <SectionTitle
+            eyebrow="Places to go"
+            title="Mountains, islands, cities and everything between."
+            text="Browse destinations and find the kind of journey you feel like taking next."
+          />
+
+          <div className="mt-12 grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {destinations.map((item, index) => (
+              <DestinationCard
+                key={item.name}
+                item={item}
+                index={index}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHY VIAGO */}
+
+      <section className="section-pad bg-[#fffdf8]">
+        <div className="container-site grid gap-14 lg:grid-cols-[.85fr_1.15fr]">
+          <div className="lg:sticky lg:top-36 lg:self-start">
+            <SectionTitle
+              eyebrow="Why travel with Viago"
+              title="Less confusion. More time to enjoy the journey."
+              text="Travel planning does not need to involve twenty tabs, ten calls and uncertainty about what happens next."
+            />
+          </div>
+
+          <div className="border-t border-[#173f35]/15">
+            {benefits.map(
+              ({ icon: Icon, title, text }, index) => (
+                <div
+                  key={title}
+                  className="grid gap-5 border-b border-[#173f35]/15 py-8 sm:grid-cols-[70px_1fr]"
+                >
+                  <div className="flex">
+                    <span className="text-sm font-bold text-[#b78334]">
+                      0{index + 1}
+                    </span>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-3">
+                      <Icon
+                        size={20}
+                        className="text-[#50765c]"
+                      />
+
+                      <h3 className="text-xl font-bold text-[#173f35]">
+                        {title}
+                      </h3>
+                    </div>
+
+                    <p className="mt-3 max-w-xl leading-7 text-[#6e746f]">
+                      {text}
+                    </p>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* PROCESS */}
+
+      <section className="bg-[#efe5d0] py-24">
+        <div className="container-site">
+          <SectionTitle
+            center
+            eyebrow="How we plan your holiday"
+            title="Tell us where your mind is wandering."
+            text="We take it from there."
+          />
+
+          <div className="mx-auto mt-14 grid max-w-5xl gap-0 border-y border-[#173f35]/15 md:grid-cols-4">
+            {[
+              ["01", "Tell us your idea"],
+              ["02", "We shape the route"],
+              ["03", "Confirm the details"],
+              ["04", "Go make memories"],
+            ].map(([number, label]) => (
+              <div
+                key={label}
+                className="border-b border-[#173f35]/15 px-6 py-9 text-center last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0"
+              >
+                <div className="font-serif text-3xl italic text-[#b78334]">
+                  {number}
+                </div>
+
+                <h3 className="mt-4 font-bold text-[#173f35]">
+                  {label}
+                </h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* REVIEWS */}
+
+      <section className="section-pad bg-[#fffdf8]">
+        <div className="container-site">
+          <div className="grid gap-12 lg:grid-cols-[.7fr_1.3fr]">
+            <SectionTitle
+              eyebrow="Traveller notes"
+              title="The best feedback usually sounds simple."
+              text="Comfortable stays. Clear communication. Enough time to enjoy where you are."
+            />
+
+            <div className="grid gap-5">
+              {reviews.map((review) => (
+                <div
+                  key={review.name}
+                  className="border-b border-[#173f35]/15 pb-7"
+                >
+                  <div className="flex gap-1 text-[#c7923e]">
+                    {[1, 2, 3, 4, 5].map((x) => (
+                      <Star
+                        key={x}
+                        size={15}
+                        fill="currentColor"
+                      />
+                    ))}
+                  </div>
+
+                  <p className="mt-4 max-w-2xl text-lg leading-8 text-[#44534c]">
+                    “{review.text}”
+                  </p>
+
+                  <div className="mt-4 text-sm">
+                    <span className="font-bold text-[#173f35]">
+                      {review.name}
+                    </span>
+
+                    <span className="mx-2 text-[#b78334]">
+                      —
+                    </span>
+
+                    <span className="text-[#7a827e]">
+                      {review.destination}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <CTASection />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "TravelAgency",
+            name: "Viago",
+            url: siteConfig.url,
+            telephone: siteConfig.phone,
+            email: siteConfig.email,
+          }),
+        }}
+      />
+    </WebsiteShell>
+  );
+}

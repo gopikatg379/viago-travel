@@ -1,0 +1,1 @@
+import PackageForm from "@/components/admin/PackageForm"; export default function AddPackage(){return <><div><p className="text-sm text-slate-400">Package management</p><h1 className="text-3xl font-black">Add package</h1></div><div className="mt-8"><PackageForm/></div></>}

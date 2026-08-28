@@ -1,0 +1,2 @@
+"use client"; import { Trash2 } from "lucide-react"; import { useRouter } from "next/navigation";
+export default function DeletePackageButton({id}){const router=useRouter(); async function remove(){if(!confirm('Delete this package? This action cannot be undone.'))return; const res=await fetch(`/api/admin/packages/${id}`,{method:'DELETE'}); if(res.ok)router.refresh(); else alert('Could not delete package.')}return <button onClick={remove} aria-label="Delete package" className="grid h-9 w-9 place-items-center rounded-lg bg-rose-50 text-rose-500"><Trash2 size={16}/></button>}

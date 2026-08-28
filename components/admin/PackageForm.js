@@ -1,0 +1,720 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  Plus,
+  X,
+  Images,
+  ImagePlus,
+  Loader2,
+} from "lucide-react";
+
+const fields = [
+  ["title", "Package title"],
+  ["destination", "Destination"],
+  ["country", "Country"],
+  ["category", "Category"],
+  ["duration", "Duration"],
+  ["days", "Number of days", "number"],
+  ["nights", "Number of nights", "number"],
+  ["price", "Starting price", "number"],
+  ["originalPrice", "Original price", "number"],
+  ["seoTitle", "SEO title"],
+  ["seoDescription", "SEO description"],
+];
+
+export default function PackageForm({ pkg }) {
+  const router = useRouter();
+
+  const galleryInputRef = useRef(null);
+
+  const [loading, setLoading] = useState(false);
+  const [galleryFiles, setGalleryFiles] = useState([]);
+
+  // ---------------------------------------
+  // ADD GALLERY IMAGES
+  // ---------------------------------------
+
+  function handleGalleryChange(e) {
+    const selectedFiles = Array.from(
+      e.target.files || []
+    );
+
+    if (!selectedFiles.length) {
+      return;
+    }
+
+    const imageFiles = selectedFiles.filter(
+      (file) =>
+        file.type.startsWith("image/")
+    );
+
+    const newFiles = imageFiles.map(
+      (file) => ({
+        id: `${file.name}-${file.size}-${file.lastModified}-${crypto.randomUUID()}`,
+        file,
+        preview:
+          URL.createObjectURL(file),
+      })
+    );
+
+    setGalleryFiles((prev) => [
+      ...prev,
+      ...newFiles,
+    ]);
+
+    // Allows selecting the same file again
+    e.target.value = "";
+  }
+
+  // ---------------------------------------
+  // REMOVE GALLERY IMAGE
+  // ---------------------------------------
+
+  function removeGalleryImage(id) {
+    setGalleryFiles((prev) => {
+      const item = prev.find(
+        (image) => image.id === id
+      );
+
+      if (item) {
+        URL.revokeObjectURL(
+          item.preview
+        );
+      }
+
+      return prev.filter(
+        (image) => image.id !== id
+      );
+    });
+  }
+
+  // Cleanup preview URLs
+  useEffect(() => {
+    return () => {
+      galleryFiles.forEach(
+        (item) => {
+          URL.revokeObjectURL(
+            item.preview
+          );
+        }
+      );
+    };
+  }, []);
+
+  // ---------------------------------------
+  // SUBMIT
+  // ---------------------------------------
+
+  async function submit(e) {
+    e.preventDefault();
+
+    const formElement =
+      e.currentTarget;
+
+    setLoading(true);
+
+    try {
+      const form =
+        new FormData(formElement);
+
+      /*
+       * We manually add gallery images.
+       *
+       * The visible file picker does not
+       * have name="gallery", so there are
+       * no duplicate files in FormData.
+       */
+
+      galleryFiles.forEach(
+        ({ file }) => {
+          form.append(
+            "gallery",
+            file
+          );
+        }
+      );
+
+      const url = pkg
+        ? `/api/admin/packages/${pkg.id}`
+        : "/api/admin/packages";
+
+      const res = await fetch(url, {
+        method: pkg
+          ? "PUT"
+          : "POST",
+
+        body: form,
+      });
+
+      if (res.ok) {
+        router.push(
+          "/admin/packages"
+        );
+
+        router.refresh();
+
+        return;
+      }
+
+      const data =
+        await res.json();
+
+      alert(
+        data.message ||
+          "Could not save package"
+      );
+    } catch (error) {
+      console.error(
+        "Package save error:",
+        error
+      );
+
+      alert(
+        "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <form
+      onSubmit={submit}
+      className="grid gap-6"
+    >
+      {/* -------------------------------- */}
+      {/* HIDDEN SLUG                     */}
+      {/* -------------------------------- */}
+
+      {pkg?.slug && (
+        <input
+          type="hidden"
+          name="slug"
+          value={pkg.slug}
+        />
+      )}
+
+      {/* -------------------------------- */}
+      {/* PACKAGE DETAILS                  */}
+      {/* -------------------------------- */}
+
+      <section className="rounded-[26px] border border-slate-100 bg-white p-6 shadow-sm md:p-7">
+        <div className="mb-6">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#c7923e]">
+            Basic Information
+          </p>
+
+          <h2 className="mt-2 text-xl font-black text-[#173f35]">
+            Package Details
+          </h2>
+
+          <p className="mt-1 text-sm text-slate-500">
+            Enter the main details
+            travellers will see on the
+            website.
+          </p>
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2">
+          {fields.map(
+            ([
+              name,
+              label,
+              type = "text",
+            ]) => (
+              <label
+                key={name}
+                className="text-sm font-bold text-slate-700"
+              >
+                {label}
+
+                <input
+                  name={name}
+                  type={type}
+                  step={
+                    type ===
+                    "number"
+                      ? "0.01"
+                      : undefined
+                  }
+                  required={
+                    ![
+                      "originalPrice",
+                      "seoTitle",
+                      "seoDescription",
+                    ].includes(
+                      name
+                    )
+                  }
+                  defaultValue={
+                    pkg?.[
+                      name
+                    ]?.toString?.() ||
+                    ""
+                  }
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 font-normal outline-none transition focus:border-[#173f35] focus:ring-2 focus:ring-[#173f35]/5"
+                />
+              </label>
+            )
+          )}
+        </div>
+      </section>
+
+      {/* -------------------------------- */}
+      {/* PACKAGE INFORMATION              */}
+      {/* -------------------------------- */}
+
+      <section className="grid gap-5 rounded-[26px] border border-slate-100 bg-white p-6 shadow-sm md:p-7">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#c7923e]">
+            Traveller Information
+          </p>
+
+          <h2 className="mt-2 text-xl font-black text-[#173f35]">
+            Package Information
+          </h2>
+
+          <p className="mt-1 text-sm text-slate-500">
+            Explain what travellers can
+            expect from this package.
+          </p>
+        </div>
+
+        {[
+          [
+            "shortDescription",
+            "Short description",
+            3,
+          ],
+
+          [
+            "description",
+            "Full description",
+            6,
+          ],
+
+          [
+            "highlights",
+            "Package highlights (one per line)",
+            5,
+          ],
+
+          [
+            "inclusions",
+            "What's included (one per line)",
+            5,
+          ],
+
+          [
+            "exclusions",
+            "What's not included (one per line)",
+            5,
+          ],
+
+          [
+            "hotelDetails",
+            "Hotel information",
+            4,
+          ],
+
+          [
+            "transportation",
+            "Transportation",
+            4,
+          ],
+
+          [
+            "terms",
+            "Terms & conditions",
+            4,
+          ],
+        ].map(
+          ([
+            name,
+            label,
+            rows,
+          ]) => (
+            <label
+              key={name}
+              className="text-sm font-bold text-slate-700"
+            >
+              {label}
+
+              <textarea
+                name={name}
+                rows={rows}
+                required={
+                  ![
+                    "hotelDetails",
+                    "transportation",
+                    "terms",
+                  ].includes(
+                    name
+                  )
+                }
+                defaultValue={
+                  pkg?.[name] ||
+                  ""
+                }
+                className="mt-2 w-full resize-y rounded-xl border border-slate-200 px-4 py-3 font-normal leading-6 outline-none transition focus:border-[#173f35] focus:ring-2 focus:ring-[#173f35]/5"
+              />
+            </label>
+          )
+        )}
+      </section>
+
+      {/* -------------------------------- */}
+      {/* IMAGES                           */}
+      {/* -------------------------------- */}
+
+      <section className="rounded-[26px] border border-slate-100 bg-white p-6 shadow-sm md:p-7">
+        <div className="mb-7">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#c7923e]">
+            Visuals
+          </p>
+
+          <h2 className="mt-2 text-xl font-black text-[#173f35]">
+            Package Images
+          </h2>
+
+          <p className="mt-1 text-sm text-slate-500">
+            Add an attractive cover image
+            and multiple gallery photos.
+          </p>
+        </div>
+
+        {/* MAIN IMAGE */}
+
+        <div className="grid gap-5 md:grid-cols-2">
+          <label className="text-sm font-bold text-slate-700">
+            Main package image
+
+            <input
+              name="mainImage"
+              type="file"
+              accept="image/*"
+              className="mt-2 block w-full rounded-xl border border-slate-200 p-3 font-normal"
+            />
+
+            <span className="mt-2 block text-xs font-normal text-slate-400">
+              Recommended: landscape
+              image with good quality.
+            </span>
+          </label>
+
+          <label className="text-sm font-bold text-slate-700">
+            Or main image URL
+
+            <input
+              name="imageUrl"
+              defaultValue={
+                pkg?.image ||
+                ""
+              }
+              placeholder="https://..."
+              className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3 font-normal outline-none transition focus:border-[#173f35]"
+            />
+          </label>
+        </div>
+
+        {/* GALLERY */}
+
+        <div className="mt-8 border-t border-slate-100 pt-7">
+          <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+            <div className="flex items-start gap-3">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#eff5f2] text-[#173f35]">
+                <Images
+                  size={19}
+                />
+              </span>
+
+              <div>
+                <h3 className="text-sm font-black text-[#173f35]">
+                  Gallery Images
+                </h3>
+
+                <p className="mt-1 text-xs leading-5 text-slate-500">
+                  Upload several photos
+                  showing the destination,
+                  hotel and experiences.
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() =>
+                galleryInputRef.current?.click()
+              }
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#173f35] px-4 py-2.5 text-sm font-bold !text-white transition hover:bg-[#24594a]"
+            >
+              <Plus size={17} />
+
+              Add Images
+            </button>
+
+            <input
+              ref={
+                galleryInputRef
+              }
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={
+                handleGalleryChange
+              }
+              className="hidden"
+            />
+          </div>
+
+          {/* NO IMAGES */}
+
+          {galleryFiles.length ===
+            0 && (
+            <button
+              type="button"
+              onClick={() =>
+                galleryInputRef.current?.click()
+              }
+              className="mt-5 flex min-h-[180px] w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50/60 transition hover:border-[#173f35]/40 hover:bg-[#f7faf8]"
+            >
+              <span className="grid h-12 w-12 place-items-center rounded-full bg-[#173f35] text-white">
+                <ImagePlus
+                  size={21}
+                />
+              </span>
+
+              <span className="mt-3 text-sm font-bold text-[#173f35]">
+                Add gallery photos
+              </span>
+
+              <span className="mt-1 text-xs text-slate-400">
+                You can select
+                multiple images at once
+              </span>
+            </button>
+          )}
+
+          {/* IMAGE PREVIEWS */}
+
+          {galleryFiles.length >
+            0 && (
+            <>
+              <div className="mt-5 flex items-center justify-between">
+                <p className="text-sm font-semibold text-slate-600">
+                  {
+                    galleryFiles.length
+                  }{" "}
+                  image
+                  {galleryFiles.length >
+                  1
+                    ? "s"
+                    : ""}{" "}
+                  selected
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    galleryInputRef.current?.click()
+                  }
+                  className="inline-flex items-center gap-1.5 text-sm font-bold text-[#173f35]"
+                >
+                  <Plus
+                    size={16}
+                  />
+
+                  Add more
+                </button>
+              </div>
+
+              <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {galleryFiles.map(
+                  (
+                    item,
+                    index
+                  ) => (
+                    <div
+                      key={
+                        item.id
+                      }
+                      className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-50"
+                    >
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        <img
+                          src={
+                            item.preview
+                          }
+                          alt={`Gallery image ${
+                            index +
+                            1
+                          }`}
+                          className="h-full w-full object-cover"
+                        />
+
+                        <div className="absolute inset-0 bg-black/0 transition group-hover:bg-black/10" />
+
+                        <span className="absolute bottom-2 left-2 rounded-lg bg-black/60 px-2 py-1 text-[10px] font-bold text-white">
+                          #
+                          {index +
+                            1}
+                        </span>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            removeGalleryImage(
+                              item.id
+                            )
+                          }
+                          aria-label="Remove image"
+                          className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-black/70 text-white shadow-sm transition hover:bg-red-600"
+                        >
+                          <X
+                            size={
+                              15
+                            }
+                          />
+                        </button>
+                      </div>
+
+                      <div className="px-3 py-2.5">
+                        <p className="truncate text-xs font-medium text-slate-500">
+                          {
+                            item
+                              .file
+                              .name
+                          }
+                        </p>
+                      </div>
+                    </div>
+                  )
+                )}
+
+                {/* ADD MORE TILE */}
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    galleryInputRef.current?.click()
+                  }
+                  className="flex aspect-[4/3] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 transition hover:border-[#173f35]/40 hover:bg-[#f7faf8]"
+                >
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-[#173f35] text-white">
+                    <Plus
+                      size={18}
+                    />
+                  </span>
+
+                  <span className="mt-2 text-xs font-bold text-[#173f35]">
+                    Add more
+                  </span>
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* STATUS */}
+
+        <div className="mt-8 flex flex-wrap items-center gap-6 border-t border-slate-100 pt-6">
+          <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-slate-700">
+            <input
+              name="featured"
+              type="checkbox"
+              defaultChecked={
+                pkg?.featured
+              }
+              className="h-4 w-4 accent-[#173f35]"
+            />
+
+            Featured package
+          </label>
+
+          <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-slate-700">
+            <input
+              name="active"
+              type="checkbox"
+              defaultChecked={
+                pkg
+                  ? pkg.active
+                  : true
+              }
+              className="h-4 w-4 accent-[#173f35]"
+            />
+
+            Show on website
+          </label>
+        </div>
+      </section>
+
+      {/* -------------------------------- */}
+      {/* ITINERARY                        */}
+      {/* -------------------------------- */}
+
+      <section className="rounded-[26px] border border-slate-100 bg-white p-6 shadow-sm md:p-7">
+        <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#c7923e]">
+          Trip Plan
+        </p>
+
+        <h2 className="mt-2 text-xl font-black text-[#173f35]">
+          Itinerary
+        </h2>
+
+        <p className="mt-1 text-sm text-slate-500">
+          Enter one day per line in
+          this format:
+        </p>
+
+        <div className="mt-3 inline-block rounded-lg bg-[#f8f4e9] px-3 py-2 text-xs font-semibold text-[#173f35]">
+          Day title | Description
+        </div>
+
+        <textarea
+          name="itinerary"
+          rows="8"
+          defaultValue={(
+            pkg?.itineraries ||
+            []
+          )
+            .map(
+              (item) =>
+                `${item.title} | ${item.description}`
+            )
+            .join("\n")}
+          className="mt-4 w-full rounded-xl border border-slate-200 px-4 py-3 leading-6 outline-none transition focus:border-[#173f35]"
+          placeholder={
+            "Arrival | Airport pickup and hotel check-in\nKumarakom sightseeing | Explore Vembanad Lake and nearby attractions\nDeparture | Breakfast, checkout and return journey"
+          }
+        />
+      </section>
+
+      {/* -------------------------------- */}
+      {/* SUBMIT                           */}
+      {/* -------------------------------- */}
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          disabled={loading}
+          className="inline-flex min-w-[170px] items-center justify-center gap-2 rounded-xl bg-[#173f35] px-7 py-3.5 font-bold !text-white transition hover:bg-[#24594a] disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {loading && (
+            <Loader2
+              size={17}
+              className="animate-spin"
+            />
+          )}
+
+          {loading
+            ? "Saving..."
+            : pkg
+              ? "Update Package"
+              : "Create Package"}
+        </button>
+      </div>
+    </form>
+  );
+}
