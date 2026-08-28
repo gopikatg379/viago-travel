@@ -13,6 +13,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "assets.luxtripper.co.uk",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
     ],
   },
 };
