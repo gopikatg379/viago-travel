@@ -30,7 +30,8 @@ export default function PackageForm({ pkg }) {
   const galleryInputRef = useRef(null);
 
   const [loading, setLoading] = useState(false);
-  const [galleryFiles, setGalleryFiles] = useState([]);
+const [galleryFiles, setGalleryFiles] = useState([]);
+const [mainImageFile, setMainImageFile] = useState(null);
 
   // ---------------------------------------
   // ADD GALLERY IMAGES
@@ -106,78 +107,177 @@ export default function PackageForm({ pkg }) {
   // ---------------------------------------
   // SUBMIT
   // ---------------------------------------
+  async function uploadImageToCloudinary(file) {
+  const cloudName =
+    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
+  const uploadPreset =
+    process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
+  if (!cloudName || !uploadPreset) {
+    throw new Error(
+      "Cloudinary configuration is missing."
+    );
+  }
+
+  const uploadData = new FormData();
+
+  uploadData.append("file", file);
+  uploadData.append(
+    "upload_preset",
+    uploadPreset
+  );
+
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+    {
+      method: "POST",
+      body: uploadData,
+    }
+  );
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    console.error(
+      "Cloudinary upload error:",
+      result
+    );
+
+    throw new Error(
+      result?.error?.message ||
+        "Image upload failed."
+    );
+  }
+
+  return result.secure_url;
+}
 
   async function submit(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const formElement =
-      e.currentTarget;
+  const formElement = e.currentTarget;
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      const form =
-        new FormData(formElement);
+  try {
+    const form =
+      new FormData(formElement);
 
-      /*
-       * We manually add gallery images.
-       *
-       * The visible file picker does not
-       * have name="gallery", so there are
-       * no duplicate files in FormData.
-       */
+    // ---------------------------------------
+    // REMOVE ACTUAL IMAGE FILE
+    // ---------------------------------------
 
-      galleryFiles.forEach(
-        ({ file }) => {
-          form.append(
-            "gallery",
-            file
-          );
-        }
+    form.delete("mainImage");
+    form.delete("gallery");
+
+    // ---------------------------------------
+    // MAIN IMAGE
+    // ---------------------------------------
+
+    let mainImageUrl =
+      pkg?.image || "";
+
+    if (mainImageFile) {
+      mainImageUrl =
+        await uploadImageToCloudinary(
+          mainImageFile
+        );
+    }
+
+    // User may also manually provide URL
+    const manualImageUrl = String(
+      form.get("imageUrl") || ""
+    ).trim();
+
+    if (
+      !mainImageFile &&
+      manualImageUrl
+    ) {
+      mainImageUrl =
+        manualImageUrl;
+    }
+
+    if (!mainImageUrl) {
+      throw new Error(
+        "Please select a main package image."
       );
+    }
 
-      const url = pkg
-        ? `/api/admin/packages/${pkg.id}`
-        : "/api/admin/packages";
+    form.set(
+      "imageUrl",
+      mainImageUrl
+    );
 
-      const res = await fetch(url, {
-        method: pkg
-          ? "PUT"
-          : "POST",
+    // ---------------------------------------
+    // GALLERY IMAGES
+    // ---------------------------------------
 
-        body: form,
-      });
+    const galleryUrls = [];
 
-      if (res.ok) {
-        router.push(
-          "/admin/packages"
+    for (const item of galleryFiles) {
+      const uploadedUrl =
+        await uploadImageToCloudinary(
+          item.file
         );
 
-        router.refresh();
-
-        return;
-      }
-
-      const data =
-        await res.json();
-
-      alert(
-        data.message ||
-          "Could not save package"
+      galleryUrls.push(
+        uploadedUrl
       );
-    } catch (error) {
-      console.error(
-        "Package save error:",
-        error
-      );
-
-      alert(
-        "Something went wrong. Please try again."
-      );
-    } finally {
-      setLoading(false);
     }
+
+    form.set(
+      "galleryUrls",
+      JSON.stringify(galleryUrls)
+    );
+
+    // ---------------------------------------
+    // SAVE PACKAGE
+    // ---------------------------------------
+
+    const url = pkg
+      ? `/api/admin/packages/${pkg.id}`
+      : "/api/admin/packages";
+
+    const res = await fetch(url, {
+      method: pkg ? "PUT" : "POST",
+      body: form,
+    });
+
+    let data = {};
+
+    try {
+      data = await res.json();
+    } catch {
+      data = {};
+    }
+
+    if (!res.ok) {
+      throw new Error(
+        data.message ||
+          "Could not save package."
+      );
+    }
+
+    router.push(
+      "/admin/packages"
+    );
+
+    router.refresh();
+  } catch (error) {
+    console.error(
+      "Package save error:",
+      error
+    );
+
+    alert(
+      error.message ||
+        "Something went wrong. Please try again."
+    );
+  } finally {
+    setLoading(false);
   }
+}
 
   return (
     <form
@@ -392,11 +492,18 @@ export default function PackageForm({ pkg }) {
             Main package image
 
             <input
-              name="mainImage"
-              type="file"
-              accept="image/*"
-              className="mt-2 block w-full rounded-xl border border-slate-200 p-3 font-normal"
-            />
+  type="file"
+  accept="image/*"
+  onChange={(e) => {
+    const file =
+      e.target.files?.[0];
+
+    setMainImageFile(
+      file || null
+    );
+  }}
+  className="mt-2 block w-full rounded-xl border border-slate-200 p-3 font-normal"
+/>
 
             <span className="mt-2 block text-xs font-normal text-slate-400">
               Recommended: landscape
