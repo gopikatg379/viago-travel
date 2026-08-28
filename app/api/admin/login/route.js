@@ -7,6 +7,11 @@ export async function POST(request) {
   try {
     const form = await request.formData();
 
+    console.log("LOGIN DEBUG 1", {
+      email,
+      databaseUrlExists: !!process.env.DATABASE_URL,
+    });
+
     const email = String(form.get("email") || "")
       .toLowerCase()
       .trim();
@@ -18,6 +23,11 @@ export async function POST(request) {
         email,
       },
     });
+
+    console.log("LOGIN DEBUG 2", {
+  adminFound: !!admin,
+  adminEmail: admin?.email || null,
+});
 
     if (!admin) {
       return NextResponse.redirect(
@@ -31,6 +41,9 @@ export async function POST(request) {
       admin.password
     );
 
+    console.log("LOGIN DEBUG 3", {
+  passwordValid,
+});
     if (!passwordValid) {
       return NextResponse.redirect(
         new URL("/admin/login?error=invalid", request.url),
