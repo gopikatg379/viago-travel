@@ -1,16 +1,11 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import prisma from "../../../../lib/prisma";
+import prisma from "@/lib/prisma";
+import { createAdminToken } from "@/lib/auth";
 
 export async function POST(request) {
   try {
     const form = await request.formData();
-
-    console.log("LOGIN DEBUG 1", {
-      email,
-      databaseUrlExists: !!process.env.DATABASE_URL,
-    });
 
     const email = String(form.get("email") || "")
       .toLowerCase()
@@ -18,16 +13,18 @@ export async function POST(request) {
 
     const password = String(form.get("password") || "");
 
+    console.log("LOGIN DEBUG", {
+      email,
+      databaseConfigured: Boolean(process.env.DATABASE_URL),
+    });
+
     const admin = await prisma.admin.findUnique({
       where: {
         email,
       },
     });
 
-    console.log("LOGIN DEBUG 2", {
-  adminFound: !!admin,
-  adminEmail: admin?.email || null,
-});
+    console.log("ADMIN FOUND:", Boolean(admin));
 
     if (!admin) {
       return NextResponse.redirect(
@@ -41,9 +38,8 @@ export async function POST(request) {
       admin.password
     );
 
-    console.log("LOGIN DEBUG 3", {
-  passwordValid,
-});
+    console.log("PASSWORD VALID:", passwordValid);
+
     if (!passwordValid) {
       return NextResponse.redirect(
         new URL("/admin/login?error=invalid", request.url),
@@ -51,16 +47,7 @@ export async function POST(request) {
       );
     }
 
-    const token = jwt.sign(
-      {
-        id: admin.id,
-        email: admin.email,
-      },
-      process.env.AUTH_SECRET,
-      {
-        expiresIn: "1d",
-      }
-    );
+    const token = await createAdminToken(admin);
 
     const response = NextResponse.redirect(
       new URL("/admin/dashboard", request.url),
@@ -72,7 +59,7 @@ export async function POST(request) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 60 * 8,
     });
 
     return response;
