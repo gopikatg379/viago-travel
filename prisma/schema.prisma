@@ -42,9 +42,9 @@ model Package {
   seoDescription   String?        @db.Text
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
-  images            PackageImage[]
-  itineraries       Itinerary[]
-  enquiries         Enquiry[]
+  enquiries        Enquiry[]
+  itineraries      Itinerary[]
+  images           PackageImage[]
 }
 
 model PackageImage {
@@ -52,6 +52,8 @@ model PackageImage {
   image     String
   packageId Int
   package   Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@index([packageId], map: "PackageImage_packageId_fkey")
 }
 
 model Itinerary {
@@ -61,6 +63,8 @@ model Itinerary {
   description String  @db.Text
   packageId   Int
   package     Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@index([packageId], map: "Itinerary_packageId_fkey")
 }
 
 model Enquiry {
@@ -69,11 +73,13 @@ model Enquiry {
   phone       String
   email       String?
   destination String?
-  message     String    @db.Text
+  message     String   @db.Text
   packageId   Int?
-  status      String    @default("NEW")
-  createdAt   DateTime  @default(now())
-  package     Package?  @relation(fields: [packageId], references: [id], onDelete: SetNull)
+  status      String   @default("NEW")
+  createdAt   DateTime @default(now())
+  package     Package? @relation(fields: [packageId], references: [id])
+
+  @@index([packageId], map: "Enquiry_packageId_fkey")
 }
 
 model SiteVisitor {
@@ -82,12 +88,6 @@ model SiteVisitor {
   visitCount Int      @default(1)
   firstVisit DateTime @default(now())
   lastVisit  DateTime @updatedAt
-}
-
-enum ReviewStatus {
-  PENDING
-  APPROVED
-  REJECTED
 }
 
 model Review {
@@ -100,4 +100,10 @@ model Review {
   featured  Boolean      @default(false)
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

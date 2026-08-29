@@ -129,26 +129,50 @@ export default async function Home() {
 
             <form
               action="/packages"
-              className="mt-12 max-w-[650px] bg-[#fffdf8] p-2.5 shadow-2xl"
+              className="mt-12 max-w-[680px] rounded-full border border-[#e8dfce] bg-[#fffdf8]/95 p-2 shadow-[0_18px_50px_rgba(23,63,53,0.18)] backdrop-blur-md transition-all duration-300 focus-within:border-[#c7923e]/60 focus-within:shadow-[0_22px_60px_rgba(23,63,53,0.24)] max-sm:rounded-[28px]"
             >
-              <div className="flex flex-col gap-2 sm:flex-row">
-                <div className="flex flex-1 items-center gap-3 px-4">
-                  <MapPin size={18} className="text-[#b78334]" />
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                {/* Destination Input */}
+                <div className="flex flex-1 items-center gap-3 px-5">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f4ead7] text-[#b78334]">
+                    <MapPin size={18} strokeWidth={2} />
+                  </div>
 
-                  <input
-                    name="destination"
-                    aria-label="Destination"
-                    placeholder="Where would you like to go?"
-                    className="w-full bg-transparent py-4 text-[#173f35] outline-none placeholder:text-[#858d88]"
-                  />
+                  <div className="flex-1">
+                    <label
+                      htmlFor="destination"
+                      className="block text-[10px] font-bold uppercase tracking-[0.16em] text-[#b78334]"
+                    >
+                      Destination
+                    </label>
+
+                    <input
+                      id="destination"
+                      name="destination"
+                      aria-label="Destination"
+                      placeholder="Where would you like to go?"
+                      className="w-full bg-transparent py-1.5 text-[15px] font-medium text-[#173f35] outline-none placeholder:font-normal placeholder:text-[#8d948f]"
+                    />
+                  </div>
                 </div>
 
+                {/* Search Button */}
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center gap-2 bg-[#173f35] px-6 py-4 font-bold text-white"
+                  className="group inline-flex min-h-[58px] items-center justify-center gap-2.5 rounded-full bg-[#173f35] px-7 font-bold text-white shadow-lg shadow-[#173f35]/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#c7923e] hover:shadow-xl max-sm:w-full"
                 >
-                  <Search size={17} />
+                  <Search
+                    size={18}
+                    strokeWidth={2.2}
+                    className="transition-transform duration-300 group-hover:scale-110"
+                  />
+
                   Find a trip
+
+                  <ArrowRight
+                    size={16}
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  />
                 </button>
               </div>
             </form>
