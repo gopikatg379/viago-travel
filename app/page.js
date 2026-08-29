@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import prisma from "@/lib/prisma";
 
 import {
   ArrowRight,
@@ -12,6 +13,7 @@ import {
   Route,
   Palmtree,
   HeartHandshake,
+  Quote,
 } from "lucide-react";
 
 import WebsiteShell from "@/components/website/WebsiteShell";
@@ -36,6 +38,17 @@ export default async function Home() {
     })
   ).slice(0, 3);
 
+  const reviews = await prisma.review.findMany({
+    where: {
+      status: "APPROVED",
+      featured: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 3,
+  });
+
   const benefits = [
     {
       icon: Route,
@@ -56,24 +69,6 @@ export default async function Home() {
       icon: ShieldCheck,
       title: "Stays we would choose ourselves",
       text: "Hotels and experiences are selected for location, comfort and overall value rather than just photos.",
-    },
-  ];
-
-  const reviews = [
-    {
-      name: "Ananya",
-      destination: "Kumarakom",
-      text: "Our trip felt relaxed from day one. The hotel choice was lovely and the transfers were always on time.",
-    },
-    {
-      name: "Rahul",
-      destination: "Munnar",
-      text: "What we liked most was that the itinerary did not feel rushed. We had enough time to simply enjoy the place.",
-    },
-    {
-      name: "Meera",
-      destination: "Alleppy",
-      text: "Every detail was explained clearly before we travelled and the team stayed available throughout our trip.",
     },
   ];
 
@@ -109,32 +104,27 @@ export default async function Home() {
             </h1>
 
             <p className="mt-6 max-w-[590px] text-lg leading-8 text-white/80">
-              From misty hill roads and quiet
-              backwaters to beaches and journeys
-              abroad, Viago plans holidays with
-              the time, care and local understanding
-              they deserve.
+              From misty hill roads and quiet backwaters to beaches and journeys
+              abroad, Viago plans holidays with the time, care and local
+              understanding they deserve.
             </p>
 
             <div className="mt-9 flex flex-wrap gap-4">
-                <Link
-                    href="/packages"
-                    className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-[6px] bg-[#f2d39a] px-7 py-4 text-[15px] font-bold text-[#173f35] shadow-sm transition-all duration-200 hover:bg-[#f6dfb4] hover:shadow-md"
-                >
-                    Explore Journeys
+              <Link
+                href="/packages"
+                className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-[6px] bg-[#f2d39a] px-7 py-4 text-[15px] font-bold text-[#173f35] shadow-sm transition-all duration-200 hover:bg-[#f6dfb4] hover:shadow-md"
+              >
+                Explore Journeys
 
-                    <ArrowRight
-                    size={18}
-                    strokeWidth={2}
-                    />
-                </Link>
+                <ArrowRight size={18} strokeWidth={2} />
+              </Link>
 
-                <Link
-                    href="/contact"
-                    className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-[6px] border border-white/60 bg-white/5 px-7 py-4 text-[15px] font-bold text-white backdrop-blur-sm transition-all duration-200 hover:bg-white hover:text-[#173f35]"
-                >
-                    Plan With Us
-                </Link>
+              <Link
+                href="/contact"
+                className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-[6px] border border-white/60 bg-white/5 px-7 py-4 text-[15px] font-bold text-white backdrop-blur-sm transition-all duration-200 hover:bg-white hover:text-[#173f35]"
+              >
+                Plan With Us
+              </Link>
             </div>
 
             <form
@@ -143,10 +133,7 @@ export default async function Home() {
             >
               <div className="flex flex-col gap-2 sm:flex-row">
                 <div className="flex flex-1 items-center gap-3 px-4">
-                  <MapPin
-                    size={18}
-                    className="text-[#b78334]"
-                  />
+                  <MapPin size={18} className="text-[#b78334]" />
 
                   <input
                     name="destination"
@@ -181,19 +168,16 @@ export default async function Home() {
             </span>
 
             <h2 className="mt-5 max-w-3xl text-3xl font-bold leading-tight text-[#173f35] md:text-5xl">
-              We believe a good holiday should
-              never feel like a checklist.
+              We believe a good holiday should never feel like a checklist.
             </h2>
           </div>
 
           <div className="border-l-0 border-[#c7923e]/50 lg:border-l lg:pl-10">
             <p className="text-base leading-8 text-[#68716c] md:text-lg">
-              Some journeys are about waking up
-              to tea gardens. Some are about a slow
-              afternoon beside the water. Others
-              begin with a flight somewhere completely
-              new. We help put those moments together
-              into a trip that makes sense for you.
+              Some journeys are about waking up to tea gardens. Some are about a
+              slow afternoon beside the water. Others begin with a flight
+              somewhere completely new. We help put those moments together into
+              a trip that makes sense for you.
             </p>
           </div>
         </div>
@@ -221,10 +205,7 @@ export default async function Home() {
 
           <div className="mt-12 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
             {packages.map((pkg) => (
-              <PackageCard
-                key={pkg.id}
-                pkg={pkg}
-              />
+              <PackageCard key={pkg.id} pkg={pkg} />
             ))}
           </div>
         </div>
@@ -251,16 +232,13 @@ export default async function Home() {
               </span>
 
               <h2 className="mt-5 text-4xl font-bold leading-tight md:text-5xl">
-                Kerala is more than a destination.
-                It is a way of slowing down.
+                Kerala is more than a destination. It is a way of slowing down.
               </h2>
 
               <p className="mt-6 leading-8 text-white/70">
-                Drift past coconut groves,
-                wake up among tea-covered hills,
-                spend an evening beside the Arabian
-                Sea or take the long scenic road
-                between them.
+                Drift past coconut groves, wake up among tea-covered hills,
+                spend an evening beside the Arabian Sea or take the long scenic
+                road between them.
               </p>
 
               <Link
@@ -310,37 +288,32 @@ export default async function Home() {
           </div>
 
           <div className="border-t border-[#173f35]/15">
-            {benefits.map(
-              ({ icon: Icon, title, text }, index) => (
-                <div
-                  key={title}
-                  className="grid gap-5 border-b border-[#173f35]/15 py-8 sm:grid-cols-[70px_1fr]"
-                >
-                  <div className="flex">
-                    <span className="text-sm font-bold text-[#b78334]">
-                      0{index + 1}
-                    </span>
-                  </div>
-
-                  <div>
-                    <div className="flex items-center gap-3">
-                      <Icon
-                        size={20}
-                        className="text-[#50765c]"
-                      />
-
-                      <h3 className="text-xl font-bold text-[#173f35]">
-                        {title}
-                      </h3>
-                    </div>
-
-                    <p className="mt-3 max-w-xl leading-7 text-[#6e746f]">
-                      {text}
-                    </p>
-                  </div>
+            {benefits.map(({ icon: Icon, title, text }, index) => (
+              <div
+                key={title}
+                className="grid gap-5 border-b border-[#173f35]/15 py-8 sm:grid-cols-[70px_1fr]"
+              >
+                <div className="flex">
+                  <span className="text-sm font-bold text-[#b78334]">
+                    0{index + 1}
+                  </span>
                 </div>
-              )
-            )}
+
+                <div>
+                  <div className="flex items-center gap-3">
+                    <Icon size={20} className="text-[#50765c]" />
+
+                    <h3 className="text-xl font-bold text-[#173f35]">
+                      {title}
+                    </h3>
+                  </div>
+
+                  <p className="mt-3 max-w-xl leading-7 text-[#6e746f]">
+                    {text}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -382,51 +355,149 @@ export default async function Home() {
 
       {/* REVIEWS */}
 
-      <section className="section-pad bg-[#fffdf8]">
-        <div className="container-site">
-          <div className="grid gap-12 lg:grid-cols-[.7fr_1.3fr]">
-            <SectionTitle
-              eyebrow="Traveller notes"
-              title="The best feedback usually sounds simple."
-              text="Comfortable stays. Clear communication. Enough time to enjoy where you are."
-            />
+      <section className="relative overflow-hidden bg-[#173f35] py-24 text-white">
+        {/* Decorative background */}
 
-            <div className="grid gap-5">
-              {reviews.map((review) => (
-                <div
-                  key={review.name}
-                  className="border-b border-[#173f35]/15 pb-7"
-                >
-                  <div className="flex gap-1 text-[#c7923e]">
-                    {[1, 2, 3, 4, 5].map((x) => (
-                      <Star
-                        key={x}
-                        size={15}
-                        fill="currentColor"
-                      />
-                    ))}
-                  </div>
+        <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-[#c7923e]/10 blur-3xl" />
 
-                  <p className="mt-4 max-w-2xl text-lg leading-8 text-[#44534c]">
-                    “{review.text}”
-                  </p>
+        <div className="pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-white/5 blur-3xl" />
 
-                  <div className="mt-4 text-sm">
-                    <span className="font-bold text-[#173f35]">
-                      {review.name}
-                    </span>
+        <div className="container-site relative">
+          {/* Heading */}
 
-                    <span className="mx-2 text-[#b78334]">
-                      —
-                    </span>
-
-                    <span className="text-[#7a827e]">
-                      {review.destination}
-                    </span>
-                  </div>
-                </div>
-              ))}
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#e8c986]/25 bg-[#e8c986]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-[#e8c986]">
+              <Star size={14} fill="currentColor" />
+              Traveller Stories
             </div>
+
+            <h2 className="mt-6 text-4xl font-bold leading-tight tracking-[-0.03em] md:text-5xl lg:text-6xl">
+              Journeys remembered.
+              <span className="font-serif italic text-[#f2d39a]">
+                {" "}
+                Stories shared.
+              </span>
+            </h2>
+
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-white/65 md:text-lg">
+              Real experiences from travellers who trusted Viago to turn their
+              holiday plans into memories worth sharing.
+            </p>
+          </div>
+
+          {/* Review Cards */}
+
+          {reviews.length > 0 ? (
+            <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {reviews.map((review) => {
+                const initial = review.name
+                  ? review.name.charAt(0).toUpperCase()
+                  : "V";
+
+                return (
+                  <article
+                    key={review.id}
+                    className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.07] p-7 shadow-[0_20px_60px_rgba(0,0,0,0.12)] backdrop-blur-sm transition duration-300 hover:-translate-y-2 hover:border-[#e8c986]/30 hover:bg-white/[0.1] md:p-8"
+                  >
+                    {/* Quote + Stars */}
+
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="flex gap-1 text-[#e8c986]">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star
+                            key={star}
+                            size={17}
+                            strokeWidth={1.8}
+                            className={
+                              star <= review.rating
+                                ? "text-[#e8c986]"
+                                : "text-white/20"
+                            }
+                            fill={
+                              star <= review.rating
+                                ? "currentColor"
+                                : "none"
+                            }
+                          />
+                        ))}
+                      </div>
+
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e8c986]/10 text-[#e8c986] transition group-hover:bg-[#e8c986] group-hover:text-[#173f35]">
+                        <Quote size={19} />
+                      </div>
+                    </div>
+
+                    {/* Review */}
+
+                    <p className="mt-7 flex-1 text-[17px] leading-8 text-white/80">
+                      “{review.review}”
+                    </p>
+
+                    {/* Customer */}
+
+                    <div className="mt-8 flex items-center gap-4 border-t border-white/10 pt-6">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#f2d39a] text-lg font-bold text-[#173f35] shadow-sm">
+                        {initial}
+                      </div>
+
+                      <div>
+                        <h3 className="font-bold text-white">
+                          {review.name}
+                        </h3>
+
+                        {review.location && (
+                          <div className="mt-1 flex items-center gap-1.5 text-sm text-white/50">
+                            <MapPin size={13} />
+                            {review.location}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="mx-auto mt-14 max-w-2xl rounded-[30px] border border-white/10 bg-white/[0.06] px-8 py-14 text-center">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#e8c986]/10 text-[#e8c986]">
+                <Quote size={26} />
+              </div>
+
+              <h3 className="mt-6 text-2xl font-bold">
+                Your story could be the first.
+              </h3>
+
+              <p className="mx-auto mt-3 max-w-md leading-7 text-white/60">
+                Travelled with Viago? Tell us about the places, moments and
+                memories that made your journey special.
+              </p>
+            </div>
+          )}
+
+          {/* Bottom CTA */}
+
+          <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-9 sm:flex-row">
+            <div>
+              <p className="font-serif text-xl italic text-[#f2d39a]">
+                Been somewhere beautiful with us?
+              </p>
+
+              <p className="mt-1 text-sm text-white/50">
+                We'd love to hear about your Viago journey.
+              </p>
+            </div>
+
+            <Link
+              href="/reviews"
+              className="group inline-flex min-h-[52px] items-center justify-center gap-3 rounded-full bg-[#f2d39a] px-7 py-3.5 text-sm font-bold text-[#173f35] shadow-lg shadow-black/10 transition-all duration-300 hover:bg-white hover:shadow-xl"
+            >
+              Share your experience
+
+              <ArrowRight
+                size={17}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              />
+            </Link>
           </div>
         </div>
       </section>

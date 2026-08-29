@@ -83,3 +83,21 @@ model SiteVisitor {
   firstVisit DateTime @default(now())
   lastVisit  DateTime @updatedAt
 }
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Review {
+  id        Int          @id @default(autoincrement())
+  name      String
+  location  String?
+  rating    Int
+  review    String       @db.Text
+  status    ReviewStatus @default(PENDING)
+  featured  Boolean      @default(false)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
