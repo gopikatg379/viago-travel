@@ -38,7 +38,7 @@ model Package {
   image            String
   featured         Boolean        @default(false)
   active           Boolean        @default(true)
-  seoTitle         String?
+  seoTitle         String?        @db.VarChar(255)
   seoDescription   String?        @db.Text
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
