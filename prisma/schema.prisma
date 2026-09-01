@@ -59,7 +59,7 @@ model PackageImage {
 model Itinerary {
   id          Int     @id @default(autoincrement())
   day         Int
-  title       String
+  title       String  @db.VarChar(255)
   description String  @db.Text
   packageId   Int
   package     Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
