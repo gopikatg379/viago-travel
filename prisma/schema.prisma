@@ -17,7 +17,7 @@ model Admin {
 
 model Package {
   id               Int            @id @default(autoincrement())
-  title            String
+  title            String         @db.VarChar(255)
   slug             String         @unique
   destination      String
   country          String

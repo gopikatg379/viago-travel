@@ -30,7 +30,7 @@ export default function Navbar() {
 
       <div className="hidden bg-[#173f35] text-white md:block">
         <div className="container-site flex h-10 items-center justify-between text-[13px]">
-          <span className="text-white/75">
+          <span className="font-serif text-lg italic tracking-wide text-[#f2d39a] md:text-l">
             Thoughtfully planned holidays from Kerala
           </span>
 

@@ -1,9 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --brand: #3A86FF;
-  --brand-dark: #1267e5;
+  /* VIAGO BRAND */
+  --brand: #176bff;
+  --brand-light: #3a86ff;
+  --brand-dark: #0757dc;
+  --brand-soft: #eaf2ff;
 
+  /* PREMIUM KERALA PALETTE */
   --kerala-green: #173f35;
   --kerala-green-light: #24594a;
   --kerala-leaf: #50765c;
@@ -134,13 +138,57 @@ select {
   }
 }
 
+
 .nav-journey-btn,
 .nav-journey-btn:link,
-.nav-journey-btn:visited,
-.nav-journey-btn:hover,
-.nav-journey-btn:active {
-  background-color: #173f35;
+.nav-journey-btn:visited {
+  background: linear-gradient(
+    135deg,
+    #176bff 0%,
+    #3a86ff 100%
+  );
+
   color: #ffffff !important;
+
+  box-shadow:
+    0 8px 22px rgba(23, 107, 255, 0.22);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background 0.3s ease;
+}
+
+.nav-journey-btn span,
+.nav-journey-btn svg {
+  color: #ffffff !important;
+}
+
+.nav-journey-btn:hover {
+  background: linear-gradient(
+    135deg,
+    #0757dc 0%,
+    #176bff 100%
+  );
+
+  color: #ffffff !important;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 28px rgba(23, 107, 255, 0.3);
+}
+
+.nav-journey-btn:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.nav-journey-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.nav-journey-btn:active {
+  transform: translateY(0);
 }
 
 .nav-journey-btn span,

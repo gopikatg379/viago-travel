@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
+import TravelStats from "@/components/website/TravelStats";
 
 import {
   ArrowRight,
@@ -181,7 +182,7 @@ export default async function Home() {
 
         <div className="absolute bottom-0 left-0 h-[12px] w-full bg-[#f8f4e9]" />
       </section>
-
+      <TravelStats />
       {/* INTRO */}
 
       <section className="bg-[#f8f4e9] py-20">
