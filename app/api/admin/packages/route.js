@@ -104,15 +104,6 @@ export async function POST(request) {
         title
       );
 
-    /*
-     * Add slug into FormData.
-     *
-     * This means your existing
-     * parsePackageForm() can continue
-     * handling slug even though the
-     * admin no longer sees the field.
-     */
-
     form.set(
       "slug",
       slug
@@ -130,11 +121,7 @@ export async function POST(request) {
       await parsePackageForm(
         form
       );
-
-    // --------------------------------
-    // CREATE PACKAGE
-    // --------------------------------
-
+      
     const pkg =
       await prisma.package.create({
         data: {
