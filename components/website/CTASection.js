@@ -11,7 +11,11 @@ export default function CTASection() {
   return (
     <section className="bg-[#fffdf8] pb-24 pt-10">
       <div className="container-site">
-        <div className="relative overflow-hidden bg-[#173f35] px-7 py-16 text-white md:px-16 md:py-20">
+
+        {/* CTA CARD */}
+        <div className="relative overflow-hidden rounded-[32px] bg-[#173f35] px-7 py-16 text-white shadow-[0_20px_60px_rgba(23,63,53,0.15)] md:px-16 md:py-20">
+
+          {/* Decorative Circles */}
           <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full border border-white/10" />
           <div className="absolute -right-10 -top-10 h-52 w-52 rounded-full border border-white/10" />
 
@@ -32,25 +36,29 @@ export default function CTASection() {
             </p>
 
             <div className="mt-9 flex flex-wrap gap-4">
+
+              {/* Browse Journeys */}
               <Link
                 href="/packages"
-                className="inline-flex items-center gap-2 bg-[#f6e8c7] px-6 py-4 font-bold text-[#173f35]"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#f6e8c7] px-6 py-4 font-bold !text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-lg"
               >
                 Browse Journeys
                 <ArrowRight size={18} />
               </Link>
 
+              {/* WhatsApp */}
               <a
                 href={whatsappUrl(
                   "Hi Viago, I would like help planning a trip."
                 )}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 border border-white/40 px-6 py-4 font-bold text-white transition hover:bg-white hover:text-[#173f35]"
+                className="inline-flex items-center gap-2 rounded-xl border border-white/40 px-6 py-4 font-bold !text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:!text-[#173f35]"
               >
                 <MessageCircle size={18} />
                 Talk to us on WhatsApp
               </a>
+
             </div>
           </div>
         </div>

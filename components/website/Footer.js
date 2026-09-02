@@ -13,90 +13,119 @@ import { siteConfig } from "@/lib/config";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#102f28] text-white">
+    <footer className="bg-[#0051FF] text-white">
       <div className="container-site">
         <div className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.4fr_.7fr_.7fr_1fr]">
+
+          {/* BRAND */}
           <div>
             <Logo light />
 
-            <p className="mt-6 max-w-sm text-sm leading-7 text-white/60">
+            <p className="mt-6 max-w-sm text-sm leading-7 text-white/75">
               Thoughtfully planned journeys from
               Kerala to places near and far.
             </p>
 
             <div className="mt-6 flex gap-3">
               <a
-                href="#"
+                href="https://www.instagram.com/viago_trips_?igsi=NDB3dm8xeWpjaWRt"
                 aria-label="Instagram"
-                className="grid h-10 w-10 place-items-center border border-white/20"
+                className="grid h-10 w-10 place-items-center rounded-full border border-white/25 transition hover:bg-white hover:text-[#176bff]"
               >
                 <Instagram size={17} />
               </a>
 
               <a
-                href="#"
+                href="https://www.facebook.com/people/viago-trips/61588733623985/?rdid=FREEW9Zmi6nKdN1R&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19PP4Hkzyt%2F"
                 aria-label="Facebook"
-                className="grid h-10 w-10 place-items-center border border-white/20"
+                className="grid h-10 w-10 place-items-center rounded-full border border-white/25 transition hover:bg-white hover:text-[#176bff]"
               >
                 <Facebook size={17} />
               </a>
             </div>
           </div>
 
+          {/* EXPLORE */}
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-[#e3bd78]">
+            <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-white">
               Explore
             </h3>
 
-            <div className="mt-5 grid gap-3 text-sm text-white/60">
-              <Link href="/packages">
+            <div className="mt-5 grid gap-3 text-sm text-white/70">
+              <Link
+                href="/packages"
+                className="transition hover:text-white"
+              >
                 Packages
               </Link>
 
-              <Link href="/destinations">
+              <Link
+                href="/destinations"
+                className="transition hover:text-white"
+              >
                 Destinations
               </Link>
 
-              <Link href="/about">
+              <Link
+                href="/about"
+                className="transition hover:text-white"
+              >
                 About Viago
               </Link>
 
-              <Link href="/contact">
+              <Link
+                href="/contact"
+                className="transition hover:text-white"
+              >
                 Contact
               </Link>
             </div>
           </div>
 
+          {/* POPULAR */}
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-[#e3bd78]">
+            <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-white">
               Popular
             </h3>
 
-            <div className="mt-5 grid gap-3 text-sm text-white/60">
-              <Link href="/packages?destination=Kumarakom">
+            <div className="mt-5 grid gap-3 text-sm text-white/70">
+              <Link
+                href="/packages?destination=Kumarakom"
+                className="transition hover:text-white"
+              >
                 Kumarakom
               </Link>
 
-              <Link href="/packages?destination=Alleppey">
+              <Link
+                href="/packages?destination=Alleppey"
+                className="transition hover:text-white"
+              >
                 Alleppey
               </Link>
 
-              <Link href="/packages?destination=Munnar">
+              <Link
+                href="/packages?destination=Munnar"
+                className="transition hover:text-white"
+              >
                 Munnar
               </Link>
 
-              <Link href="/packages?destination=Wayanad">
+              <Link
+                href="/packages?destination=Wayanad"
+                className="transition hover:text-white"
+              >
                 Wayanad
               </Link>
             </div>
           </div>
 
+          {/* CONTACT */}
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-[#e3bd78]">
+            <h3 className="text-sm font-bold uppercase tracking-[0.12em] text-white">
               Reach us
             </h3>
 
-            <div className="mt-5 grid gap-4 text-sm text-white/60">
+            <div className="mt-5 grid gap-4 text-sm text-white/70">
               <span className="flex items-start gap-3">
                 <Phone
                   size={16}
@@ -124,7 +153,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-between gap-3 border-t border-white/10 py-6 text-xs text-white/40 sm:flex-row">
+        {/* BOTTOM */}
+        <div className="flex flex-col justify-between gap-3 border-t border-white/20 py-6 text-xs text-white/60 sm:flex-row">
           <span>
             © {new Date().getFullYear()} Viago.
             All rights reserved.
