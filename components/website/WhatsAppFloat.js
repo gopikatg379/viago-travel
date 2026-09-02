@@ -1,5 +1,5 @@
 "use client";
-
+import { FaWhatsapp } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { whatsappUrl } from "@/lib/config";
@@ -52,7 +52,7 @@ export default function WhatsAppFloat() {
             rel="noreferrer"
             className="mt-3 inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-4 py-2 text-xs font-bold !text-white"
           >
-            <MessageCircle size={15} />
+            <FaWhatsapp size={15} />
             Start Chat
           </a>
         </div>
@@ -73,9 +73,8 @@ export default function WhatsAppFloat() {
         <span className="whatsapp-ring whatsapp-ring-delay absolute inset-0 rounded-full bg-[#25D366]" />
 
         {/* Icon */}
-        <MessageCircle
-          size={30}
-          strokeWidth={2.2}
+        <FaWhatsapp
+          size={36}
           className="relative z-10 text-white"
         />
 
