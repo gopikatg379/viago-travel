@@ -138,7 +138,27 @@ select {
   }
 }
 
+.hero-image-wrap {
+  position: absolute;
+  inset: 0;
+}
 
+.hero-image-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(11, 48, 66, 0.62) 0%,
+      rgba(11, 48, 66, 0.42) 35%,
+      rgba(11, 48, 66, 0.22) 65%,
+      rgba(11, 48, 66, 0.08) 100%
+    );
+}
 .nav-journey-btn,
 .nav-journey-btn:link,
 .nav-journey-btn:visited {
@@ -220,6 +240,21 @@ select {
   animation: whatsappPopup 0.45s ease-out;
 }
 
+@keyframes topMarquee {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.top-marquee {
+  display: inline-block;
+  min-width: 100%;
+  animation: topMarquee 14s linear infinite;
+}
 @keyframes whatsappPulse {
   0% {
     transform: scale(1);

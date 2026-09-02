@@ -9,7 +9,7 @@ import {
 
 import WebsiteShell from "@/components/website/WebsiteShell";
 import ContactForm from "@/components/website/ContactForm";
-
+import { FaWhatsapp } from "react-icons/fa";
 import {
   siteConfig,
   whatsappUrl,
@@ -53,27 +53,29 @@ export default async function Contact({
               shape the rest.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href={whatsappUrl(
-                  "Hi Viago, I would like help planning a trip."
-                )}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 bg-[#25D366] px-6 py-4 text-sm font-bold text-white transition hover:scale-[1.02]"
-              >
-                <MessageCircle size={18} />
-                Chat on WhatsApp
-              </a>
+           <div className="mt-8 flex flex-wrap gap-3">
+  {/* WhatsApp */}
+  <a
+    href={whatsappUrl(
+      "Hi Viago, I would like help planning a trip."
+    )}
+    target="_blank"
+    rel="noreferrer"
+    className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-7 py-4 text-sm font-bold !text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow-md"
+  >
+    <FaWhatsapp size={18} />
+    Chat on WhatsApp
+  </a>
 
-              <a
-                href={`tel:${siteConfig.phone}`}
-                className="inline-flex items-center gap-2 border border-white/30 bg-white/5 px-6 py-4 text-sm font-bold text-white backdrop-blur-sm transition hover:bg-white hover:text-[#173f35]"
-              >
-                <Phone size={18} />
-                Call us
-              </a>
-            </div>
+  {/* Call */}
+  <a
+    href={`tel:${siteConfig.phone}`}
+    className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/10 px-7 py-4 text-sm font-bold !text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:!text-[#173f35]"
+  >
+    <Phone size={18} />
+    Call us
+  </a>
+</div>
           </div>
 
           {/* Hero info panel */}
@@ -328,7 +330,7 @@ export default async function Contact({
             rel="noreferrer"
             className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-[#25D366] px-7 py-4 font-bold text-white transition hover:scale-105"
           >
-            <MessageCircle size={19} />
+            <FaWhatsapp size={19} />
             Start WhatsApp Chat
           </a>
         </div>

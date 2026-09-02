@@ -27,22 +27,34 @@ export default function Footer() {
             </p>
 
             <div className="mt-6 flex gap-3">
-              <a
-                href="https://www.instagram.com/viago_trips_?igsi=NDB3dm8xeWpjaWRt"
-                aria-label="Instagram"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/25 transition hover:bg-white hover:text-[#176bff]"
-              >
-                <Instagram size={17} />
-              </a>
+  {/* Instagram */}
+  <a
+    href="https://www.instagram.com/viago_trips_?igsi=NDB3dm8xeWpjaWRt"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Instagram"
+    className="group grid h-10 w-10 place-items-center rounded-full border border-white/25 !text-white transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-lg"
+  >
+    <Instagram
+      size={17}
+      className="!text-white transition-colors duration-300 group-hover:!text-[#0051FF]"
+    />
+  </a>
 
-              <a
-                href="https://www.facebook.com/people/viago-trips/61588733623985/?rdid=FREEW9Zmi6nKdN1R&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19PP4Hkzyt%2F"
-                aria-label="Facebook"
-                className="grid h-10 w-10 place-items-center rounded-full border border-white/25 transition hover:bg-white hover:text-[#176bff]"
-              >
-                <Facebook size={17} />
-              </a>
-            </div>
+  {/* Facebook */}
+  <a
+    href="https://www.facebook.com/people/viago-trips/61588733623985/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Facebook"
+    className="group grid h-10 w-10 place-items-center rounded-full border border-white/25 !text-white transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-lg"
+  >
+    <Facebook
+      size={17}
+      className="!text-white transition-colors duration-300 group-hover:!text-[#0051FF]"
+    />
+  </a>
+</div>
           </div>
 
           {/* EXPLORE */}

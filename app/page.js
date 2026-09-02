@@ -30,7 +30,7 @@ import { siteConfig } from "@/lib/config";
 export const dynamic = "force-dynamic";
 
 const KERALA_HERO =
-  "https://wallpapercat.com/w/full/8/2/6/851697-3840x2160-desktop-4k-kerala-background.jpg";
+  "/images/sunset.jpg";
 
 export default async function Home() {
   const packages = (
@@ -77,111 +77,120 @@ export default async function Home() {
     <WebsiteShell>
       {/* HERO */}
 
-      <section className="relative min-h-[760px] overflow-hidden bg-[#173f35]">
-        <Image
-          src={KERALA_HERO}
-          alt="Kerala backwaters surrounded by coconut trees"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
+<section className="relative min-h-[760px] overflow-hidden bg-[#173f35]">
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0d2b23]/90 via-[#173f35]/50 to-black/10" />
+  {/* Background image */}
+  <div className="hero-image-wrap absolute inset-0 z-0">
+    <Image
+      src={KERALA_HERO}
+      alt="Kerala backwaters surrounded by coconut trees"
+      fill
+      priority
+      sizes="100vw"
+      className="object-cover"
+    />
+  </div>
 
-        <div className="container-site relative flex min-h-[760px] items-center py-20">
-          <div className="max-w-[720px] text-white">
-            <div className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#f1d199]">
-              <Palmtree size={18} />
-              Travel, at a gentler pace
+  {/* Blue gradient overlay */}
+  <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#0B3042]/65 via-[#0B3042]/30 to-transparent" />
+
+  {/* Hero content */}
+  <div className="container-site relative z-20 flex min-h-[760px] items-center py-20">
+    <div className="max-w-[720px] text-white">
+
+      <div className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.18em] !text-[#f1d199]">
+        <Palmtree size={18} />
+        Travel, at a gentler pace
+      </div>
+
+      <h1 className="mt-6 max-w-[700px] text-5xl font-bold leading-[1.02] tracking-[-0.045em] !text-white sm:text-6xl lg:text-[78px]">
+        Journeys that feel
+        <span className="font-serif italic !text-[#f2d39a]">
+          {" "}
+          personal.
+        </span>
+      </h1>
+
+      <p className="mt-6 max-w-[590px] text-lg leading-8 !text-white">
+        From misty hill roads and quiet backwaters to beaches and journeys
+        abroad, Viago plans holidays with the time, care and local understanding
+        they deserve.
+      </p>
+
+      <div className="mt-9 flex flex-wrap gap-4">
+        <Link
+          href="/packages"
+          className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-full bg-[#f2d39a] px-8 py-4 text-[15px] font-bold !text-[#173f35] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#f6dfb4] hover:shadow-md"
+        >
+          Explore Journeys
+          <ArrowRight size={18} strokeWidth={2} />
+        </Link>
+
+        <Link
+          href="/contact"
+          className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-full border border-white/60 bg-white/5 px-8 py-4 text-[15px] font-bold !text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:!text-[#173f35]"
+        >
+          Plan With Us
+        </Link>
+      </div>
+
+      {/* Search form */}
+      <form
+        action="/packages"
+        className="relative z-30 mt-12 max-w-[680px] rounded-full border border-[#e8dfce] bg-[#fffdf8]/95 p-2 shadow-[0_18px_50px_rgba(23,63,53,0.18)] backdrop-blur-md transition-all duration-300 focus-within:border-[#c7923e]/60 focus-within:shadow-[0_22px_60px_rgba(23,63,53,0.24)] max-sm:rounded-[28px]"
+      >
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+
+          <div className="flex flex-1 items-center gap-3 px-5">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f4ead7] text-[#b78334]">
+              <MapPin size={18} strokeWidth={2} />
             </div>
 
-            <h1 className="mt-6 max-w-[700px] text-5xl font-bold leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-[78px]">
-              Journeys that feel
-              <span className="font-serif italic text-[#f2d39a]">
-                {" "}
-                personal.
-              </span>
-            </h1>
-
-            <p className="mt-6 max-w-[590px] text-lg leading-8 text-white/80">
-              From misty hill roads and quiet backwaters to beaches and journeys
-              abroad, Viago plans holidays with the time, care and local
-              understanding they deserve.
-            </p>
-
-            <div className="mt-9 flex flex-wrap gap-4">
-              <Link
-                href="/packages"
-                className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-[6px] bg-[#f2d39a] px-7 py-4 text-[15px] font-bold text-[#173f35] shadow-sm transition-all duration-200 hover:bg-[#f6dfb4] hover:shadow-md"
+            <div className="flex-1">
+              <label
+                htmlFor="destination"
+                className="block text-[10px] font-bold uppercase tracking-[0.16em] text-[#b78334]"
               >
-                Explore Journeys
+                Destination
+              </label>
 
-                <ArrowRight size={18} strokeWidth={2} />
-              </Link>
-
-              <Link
-                href="/contact"
-                className="inline-flex min-h-[54px] items-center justify-center gap-2 rounded-[6px] border border-white/60 bg-white/5 px-7 py-4 text-[15px] font-bold text-white backdrop-blur-sm transition-all duration-200 hover:bg-white hover:text-[#173f35]"
-              >
-                Plan With Us
-              </Link>
+              <input
+                id="destination"
+                name="destination"
+                aria-label="Destination"
+                placeholder="Where would you like to go?"
+                className="w-full bg-transparent py-1.5 text-[15px] font-medium text-[#173f35] outline-none placeholder:font-normal placeholder:text-[#8d948f]"
+              />
             </div>
-
-            <form
-              action="/packages"
-              className="mt-12 max-w-[680px] rounded-full border border-[#e8dfce] bg-[#fffdf8]/95 p-2 shadow-[0_18px_50px_rgba(23,63,53,0.18)] backdrop-blur-md transition-all duration-300 focus-within:border-[#c7923e]/60 focus-within:shadow-[0_22px_60px_rgba(23,63,53,0.24)] max-sm:rounded-[28px]"
-            >
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-                {/* Destination Input */}
-                <div className="flex flex-1 items-center gap-3 px-5">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f4ead7] text-[#b78334]">
-                    <MapPin size={18} strokeWidth={2} />
-                  </div>
-
-                  <div className="flex-1">
-                    <label
-                      htmlFor="destination"
-                      className="block text-[10px] font-bold uppercase tracking-[0.16em] text-[#b78334]"
-                    >
-                      Destination
-                    </label>
-
-                    <input
-                      id="destination"
-                      name="destination"
-                      aria-label="Destination"
-                      placeholder="Where would you like to go?"
-                      className="w-full bg-transparent py-1.5 text-[15px] font-medium text-[#173f35] outline-none placeholder:font-normal placeholder:text-[#8d948f]"
-                    />
-                  </div>
-                </div>
-
-                {/* Search Button */}
-                <button
-                  type="submit"
-                  className="group inline-flex min-h-[58px] items-center justify-center gap-2.5 rounded-full bg-[#173f35] px-7 font-bold text-white shadow-lg shadow-[#173f35]/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#c7923e] hover:shadow-xl max-sm:w-full"
-                >
-                  <Search
-                    size={18}
-                    strokeWidth={2.2}
-                    className="transition-transform duration-300 group-hover:scale-110"
-                  />
-
-                  Find a trip
-
-                  <ArrowRight
-                    size={16}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </button>
-              </div>
-            </form>
           </div>
-        </div>
 
-        <div className="absolute bottom-0 left-0 h-[12px] w-full bg-[#f8f4e9]" />
-      </section>
+          <button
+            type="submit"
+            className="group inline-flex min-h-[58px] items-center justify-center gap-2.5 rounded-full bg-[#173f35] px-7 font-bold !text-white shadow-lg shadow-[#173f35]/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#c7923e] hover:shadow-xl max-sm:w-full"
+          >
+            <Search
+              size={18}
+              strokeWidth={2.2}
+              className="transition-transform duration-300 group-hover:scale-110"
+            />
+
+            Find a trip
+
+            <ArrowRight
+              size={16}
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            />
+          </button>
+
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <div className="absolute bottom-0 left-0 z-30 h-[12px] w-full bg-[#f8f4e9]" />
+</section>
+
       <TravelStats />
       {/* INTRO */}
 
@@ -380,7 +389,7 @@ export default async function Home() {
 
       {/* REVIEWS */}
 
-      <section className="relative overflow-hidden bg-[#173f35] py-24 text-white">
+      <section className="relative overflow-hidden bg-[#0B3042] py-24 text-white">
         {/* Decorative background */}
 
         <div className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-[#c7923e]/10 blur-3xl" />
