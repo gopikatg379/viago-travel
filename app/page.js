@@ -166,7 +166,7 @@ export default async function Home() {
 
           <button
             type="submit"
-            className="group inline-flex min-h-[58px] items-center justify-center gap-2.5 rounded-full bg-[#173f35] px-7 font-bold !text-white shadow-lg shadow-[#173f35]/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#c7923e] hover:shadow-xl max-sm:w-full"
+            className="group inline-flex min-h-[58px] items-center justify-center gap-2.5 rounded-full bg-[#0B3042] px-7 font-bold !text-white shadow-lg shadow-[#0B3042]/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#c7923e] hover:shadow-xl max-sm:w-full"
           >
             <Search
               size={18}
@@ -247,7 +247,7 @@ export default async function Home() {
 
       {/* KERALA FEATURE */}
 
-      <section className="overflow-hidden bg-[#173f35] text-white">
+      <section className="overflow-hidden bg-[#0B3042] text-white">
         <div className="grid lg:grid-cols-2">
           <div className="relative min-h-[500px]">
             <Image

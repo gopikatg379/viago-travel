@@ -29,7 +29,7 @@ export default async function Contact({
   return (
     <WebsiteShell>
       {/* HERO */}
-      <section className="relative overflow-hidden bg-[#173f35] text-white">
+      <section className="relative overflow-hidden bg-[#0B3042] text-white">
         {/* Decorative background */}
         <div className="absolute inset-0 opacity-[0.08]">
           <div className="absolute -left-20 top-10 h-72 w-72 rounded-full border border-white" />
@@ -310,7 +310,7 @@ export default async function Contact({
       </section>
 
       {/* WHATSAPP CTA */}
-      <section className="bg-[#102f28] py-16 text-white">
+      <section className="bg-[#0B3042] py-16 text-white">
         <div className="container-site flex flex-col justify-between gap-8 md:flex-row md:items-center">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#e8c986]">

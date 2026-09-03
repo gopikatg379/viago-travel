@@ -28,32 +28,10 @@ export default function Navbar() {
 
   return (
     <>
-      {/* TOP BAR */}
-      <div className="hidden overflow-hidden bg-[#173f35] text-white md:block">
-        <div className="container-site flex h-10 items-center justify-between gap-8">
 
-          {/* Moving Text */}
-          <div className="relative flex-1 overflow-hidden">
-            <div className="top-marquee whitespace-nowrap">
-              <span className="font-serif text-lg italic tracking-wide text-[#f2d39a]">
-                Thoughtfully planned holidays from Kerala
-              </span>
-            </div>
-          </div>
-
-          {/* Phone */}
-          <a
-            href={`tel:${siteConfig.phone}`}
-            className="relative z-10 flex shrink-0 items-center gap-2 bg-[#173f35] pl-5 text-[13px] font-semibold !text-white transition-opacity duration-300 hover:opacity-80"
-          >
-            <Phone size={14} />
-            {siteConfig.phone}
-          </a>
-        </div>
-      </div>
 
       {/* MAIN NAVBAR */}
-      <header className="sticky top-0 z-50 border-b border-[#173f35]/10 bg-[#fffdf8]/95 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-white/30 bg-[#fffdf8]/80 shadow-[0_4px_24px_rgba(23,63,53,0.06)] backdrop-blur-xl">
         <div className="container-site flex h-[94px] items-center justify-between">
 
           {/* LOGO */}
