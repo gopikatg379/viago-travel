@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { hotelReviewWhere } from "@/lib/reviews";
 import { getAdminSession } from "@/lib/auth";
 import {
   CheckCircle2,
@@ -22,7 +21,6 @@ export default async function AdminReviewsPage() {
   }
 
   const reviews = await prisma.review.findMany({
-    where: hotelReviewWhere,
     orderBy: {
       createdAt: "desc",
     },
@@ -47,23 +45,23 @@ export default async function AdminReviewsPage() {
 
         <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c89a40]">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#c7923e]">
               Customer Feedback
             </p>
 
-            <h1 className="mt-2 text-3xl font-black tracking-tight text-[#20211f] md:text-4xl">
+            <h1 className="mt-2 text-3xl font-black tracking-tight text-[#173f35] md:text-4xl">
               Reviews
             </h1>
 
             <p className="mt-2 text-[#6e746f]">
-              All approved guest reviews appear on the Stayvo Kochi homepage.
-              Pending and rejected reviews stay hidden.
+              Approve, reject and choose which traveller reviews appear on the
+              Viago homepage.
             </p>
           </div>
 
           <Link
             href="/admin"
-            className="inline-flex w-fit items-center justify-center rounded-xl border border-[#20211f]/15 bg-white px-5 py-3 text-sm font-bold text-[#20211f] transition hover:bg-[#20211f] hover:text-white"
+            className="inline-flex w-fit items-center justify-center rounded-xl border border-[#173f35]/15 bg-white px-5 py-3 text-sm font-bold text-[#173f35] transition hover:bg-[#173f35] hover:text-white"
           >
             Back to Dashboard
           </Link>
@@ -78,10 +76,10 @@ export default async function AdminReviewsPage() {
                 Pending
               </span>
 
-              <Clock3 size={20} className="text-[#c89a40]" />
+              <Clock3 size={20} className="text-[#c7923e]" />
             </div>
 
-            <p className="mt-3 text-3xl font-black text-[#20211f]">
+            <p className="mt-3 text-3xl font-black text-[#173f35]">
               {pendingCount}
             </p>
           </div>
@@ -95,7 +93,7 @@ export default async function AdminReviewsPage() {
               <CheckCircle2 size={20} className="text-green-600" />
             </div>
 
-            <p className="mt-3 text-3xl font-black text-[#20211f]">
+            <p className="mt-3 text-3xl font-black text-[#173f35]">
               {approvedCount}
             </p>
           </div>
@@ -106,10 +104,10 @@ export default async function AdminReviewsPage() {
                 Featured
               </span>
 
-              <Star size={20} className="text-[#c89a40]" />
+              <Star size={20} className="text-[#c7923e]" />
             </div>
 
-            <p className="mt-3 text-3xl font-black text-[#20211f]">
+            <p className="mt-3 text-3xl font-black text-[#173f35]">
               {featuredCount}
             </p>
           </div>
@@ -130,12 +128,12 @@ export default async function AdminReviewsPage() {
                       {/* User */}
 
                       <div className="flex items-center gap-4">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#20211f] text-lg font-black text-white">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#173f35] text-lg font-black text-white">
                           {review.name?.charAt(0)?.toUpperCase() || "V"}
                         </div>
 
                         <div>
-                          <h2 className="text-lg font-bold text-[#20211f]">
+                          <h2 className="text-lg font-bold text-[#173f35]">
                             {review.name}
                           </h2>
 
@@ -157,7 +155,7 @@ export default async function AdminReviewsPage() {
                             size={17}
                             className={
                               star <= review.rating
-                                ? "text-[#c89a40]"
+                                ? "text-[#c7923e]"
                                 : "text-[#d6d6d6]"
                             }
                             fill={
@@ -293,10 +291,10 @@ export default async function AdminReviewsPage() {
             <div className="rounded-[24px] bg-white px-6 py-16 text-center shadow-sm">
               <Star
                 size={32}
-                className="mx-auto text-[#c89a40]"
+                className="mx-auto text-[#c7923e]"
               />
 
-              <h2 className="mt-4 text-xl font-bold text-[#20211f]">
+              <h2 className="mt-4 text-xl font-bold text-[#173f35]">
                 No reviews yet
               </h2>
 

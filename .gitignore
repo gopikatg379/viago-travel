@@ -6,4 +6,3 @@ node_modules
 public/uploads/*
 !public/uploads/.gitkeep
 npm-debug.log*
-.preview/

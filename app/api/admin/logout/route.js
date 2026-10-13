@@ -6,7 +6,7 @@ export async function POST(request) {
     303
   );
 
-  response.cookies.set("stayvo_admin", "", {
+  response.cookies.set("viago_admin", "", {
     httpOnly: true,
     sameSite: "lax",
     path: "/",
